@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import GuiaForm from './components/GuiaForm';
+import GuiaList from './components/GuiaList';
+import { Archivo } from './models/Archivo';
 
 function App() {
+  const [archivo] = useState(new Archivo());
+  const [guias, setGuias] = useState([]);
+
+  const handleAddGuia = (nuevaGuia) => {
+    archivo.agregarGuia(nuevaGuia);
+    setGuias([...archivo.guias]);
+  };
+
+  const handleFinalizarGuia = (numeroGuia) => {
+    const guia = archivo.buscarGuiaPorNumero(numeroGuia);
+    if (guia) {
+      guia.cambiarEstadoAFinalizada();
+      setGuias([...archivo.guias]);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Gestión de Envíos</h1>
+      <GuiaForm onAddGuia={handleAddGuia} />
+      <GuiaList guias={guias} onFinalizarGuia={handleFinalizarGuia} />
     </div>
   );
 }
