@@ -1,4 +1,5 @@
-import { TipoServicio, EstadoGuia } from './enums';
+import { EstadoGuia } from './enums';
+import { CalculadoraCostoGuia } from './CalculadoraCostoGuia';
 
 export class Guia {
   constructor(numeroGuia, tipoServicio, peso, valorDeclarado, esInternacional, destinatario) {
@@ -13,28 +14,7 @@ export class Guia {
   }
 
   calcularValorTotal() {
-    const valorBase = 5000;
-    let costo = valorBase;
-
-    switch (this.tipoServicio) {
-      case TipoServicio.SOBRE:
-        costo += 10000;
-        break;
-      case TipoServicio.CAJA:
-        costo += this.peso + 25000;
-        break;
-      case TipoServicio.PAQUETE:
-        costo += this.peso;
-        break;
-      default:
-        break;
-    }
-
-    if (this.esInternacional) {
-      costo *= 1.25; // Aumento del 25%
-    }
-
-    this.valorTotal = costo;
+    this.valorTotal = CalculadoraCostoGuia.calcular(this);
   }
 
   cambiarEstadoAFinalizada() {

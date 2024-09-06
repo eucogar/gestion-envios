@@ -1,32 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GuiaForm from './components/GuiaForm';
 import GuiaList from './components/GuiaList';
-import { Archivo } from './models/Archivo';
+import useGuias from './hooks/useGuias'; 
+import './App.css';
 
-function App() {
-  const [archivo] = useState(new Archivo());
-  const [guias, setGuias] = useState([]);
-
-  const handleAddGuia = (nuevaGuia) => {
-    archivo.agregarGuia(nuevaGuia);
-    setGuias([...archivo.guias]);
-  };
-
-  const handleFinalizarGuia = (numeroGuia) => {
-    const guia = archivo.buscarGuiaPorNumero(numeroGuia);
-    if (guia) {
-      guia.cambiarEstadoAFinalizada();
-      setGuias([...archivo.guias]);
-    }
-  };
+const App = () => {
+  const { guias, agregarGuia, onFinalizarGuia } = useGuias();
 
   return (
-    <div className="App">
-      <h1>Gestión de Envíos</h1>
-      <GuiaForm onAddGuia={handleAddGuia} />
-      <GuiaList guias={guias} onFinalizarGuia={handleFinalizarGuia} />
+    <div className="app-container">
+      <GuiaForm agregarGuia={agregarGuia} />
+      <GuiaList guias={guias} onFinalizarGuia={onFinalizarGuia} />
     </div>
   );
-}
+};
 
 export default App;
